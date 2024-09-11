@@ -1,5 +1,6 @@
 import React from "react";
+import Errorbax from "../Errorbax/Errorbax";
 
 export default function Comments() {
-  return <div></div>;
+  return <Errorbax msg="   کامنتی یافت نشد  " />;
 }

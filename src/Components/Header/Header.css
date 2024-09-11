@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 155%;
+  /* width: 100%; */
 }
 
 .admin-profile {
@@ -38,14 +38,14 @@
 .search-box {
   background-color: var(--white);
   border-radius: 15px;
-  border: 0.5px solid gray;
+  border: 0.01px solid #999999;
   width: 400px;
   height: 45px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 0 0 5px;
-  box-shadow: rgba(149, 157, 165, 0.2) 0 8px 24px;
+  box-shadow: rgba(149, 165, 165, 0.2) 0 8px 24px;
 }
 
 .search-box input {
