@@ -33,7 +33,7 @@
 }
 
 .sidebar-links li.active {
-  background-color: #391588;
+  background-color: --white-50 #f0f0f0;
 }
 
 .sidebar-links li:first-child {
