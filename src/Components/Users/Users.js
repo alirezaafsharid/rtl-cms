@@ -1,6 +1,6 @@
 import React from "react";
-import Errorbax from "../Errorbax/Errorbax";
+import ErrorBox from "../Errorbox/Errorbox";
 
 export default function Users() {
-  return <Errorbax msg="   کاربری یافت نشد   " />;
+  return <ErrorBox msg="   کاربری یافت نشد   " />;
 }

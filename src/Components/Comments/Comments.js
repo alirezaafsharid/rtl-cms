@@ -1,6 +1,12 @@
 import React from "react";
-import Errorbax from "../Errorbax/Errorbax";
+import DeleteModal from "../DeleteModal/DeleteModal";
+import ErrorBox from "../Errorbox/Errorbox";
 
 export default function Comments() {
-  return <Errorbax msg="   کامنتی یافت نشد  " />;
+  return (
+    <>
+      <ErrorBox msg="هیچ کامنتی یافت نشد" />
+      <DeleteModal />
+    </>
+  );
 }

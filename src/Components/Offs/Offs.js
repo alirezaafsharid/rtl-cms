@@ -1,6 +1,6 @@
 import React from "react";
-import Errorbax from "../Errorbax/Errorbax";
+import Errorbox from "../Errorbox/Errorbox";
 
 export default function Offs() {
-  return <Errorbax msg="   تخفیفی یافت نشد  " />;
+  return <Errorbox msg="   تخفیفی یافت نشد  " />;
 }

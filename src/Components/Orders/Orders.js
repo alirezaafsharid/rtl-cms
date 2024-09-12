@@ -1,6 +1,6 @@
 import React from "react";
-import Errorbax from "../Errorbax/Errorbax";
+import ErrorBox from "../Errorbox/Errorbox";
 
 export default function Orders() {
-  return <Errorbax msg="   سفارشی یافت نشد  " />;
+  return <ErrorBox msg="   سفارشی یافت نشد  " />;
 }
