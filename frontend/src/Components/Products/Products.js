@@ -7,7 +7,7 @@ export default function Products() {
   return (
     <>
       <AddNewProduct />
-      <ErrorBox msg="هیچ محصولی یافت نشد" />
+
       <ProductsTable />
     </>
   );
