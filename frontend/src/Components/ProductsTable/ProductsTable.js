@@ -5,27 +5,40 @@ import DetailsModal from "./../DetailsModal/DetailsModal";
 import EditModal from "./../EditModal/EditModal";
 import { AiOutlineDollarCircle } from "react-icons/ai";
 import ErrorBox from "../Errorbox/Errorbox";
+import Products from "../Products/Products";
 
 export default function ProductsTable() {
   const [isShowDeleteModal, setIsShowDeleteModal] = useState(false);
   const [isShowDetailsModal, setIsShowDetailsModal] = useState(false);
   const [isShowEditModal, setIsShowEditModal] = useState(false);
   const [allProducts, setAllProducts] = useState([]);
-  const [productID, setProductID] = useState([]);
+  const [productID, setProductID] = useState(null);
 
-  // useEffect(() => {
-  //   getAllproducts()
-  // }, []);برنامه زمپ کار نکرد دیگه
+  useEffect(() => {
+    getAllProducts();
+  }, []);
 
-  // const getAllproducts = () => {
-  //   fetch(
-  //     //     "http://localhost:8000/api/products/"
-  //     //   )
-  //     //     .then((res) => res.json())
-  //     //     .then((products) => setAllProducts(products));
-  // }
-  // این کارو هم برای این کرد که بعد از حذف کردن یک محصول صفحه رندر بشه و دیگه
-  // محصول پاک شده رو نشون نده یا درواقع بره و از سرور محصولاتی که هست رو دوباره بیاره
+  const getAllProducts = () => {
+    fetch("https://dummyjson.com/products")
+      .then((res) => res.json())
+      .then((products) => {
+        //debugger;
+        // فرقش با روش قبلی استفاده از دیتابیس فیکه دامی جیسون
+        // و ساختار گت کردن از دیتابی و ست کردنش
+        // اینجا از سرور اطلاعات رو میگیره
+        // با توجه به ساختار هر سرور پاسخ فرق میکنه
+        // توی این درخواست محصولات داخل محصولات نشون داده میشه
+        // مقدار برگشتی یک لیستی از محصولات است
+        //
+        if (Array.isArray(products.products)) {
+          setAllProducts(products.products);
+        }
+        // else {
+        //   console.log("not product");
+        //   setAllProducts([]);
+        // }
+      });
+  };
 
   const deleteModalCancelAction = () => {
     console.log("مدال کنسل شد");
@@ -34,32 +47,29 @@ export default function ProductsTable() {
 
   const deleteModalSubmitAction = () => {
     console.log("مدال تایید شد");
-    console.log(productID);
-    // fetch(`http://localhost:8000/api/products/${productID}`, {
-    //   method: "DELETE",
-    // })
-    //   .then((res) => res.json())
-    //   .then((result) => {
-    setIsShowDeleteModal(false);
-    // getAllproducts()
+    fetch("https://dummyjson.com/products", {
+      method: "DELETE",
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        setIsShowDeleteModal(false);
+        getAllProducts();
+      });
   };
-}
-// ;برنامه زمپ کار نکرد دیگه
-// وقتی بخای ان کامنت کنی به مشکلات ساختاری میخوری با گذاشتن پرانتزو اینا حل میشه
 
-const closeDetailsmodal = () => {
-  setIsShowDetailsModal(false);
-  console.log("مدال جزییات بسته شد");
-};
+  const closeDetailsmodal = () => {
+    setIsShowDetailsModal(false);
+    console.log("مدال جزییات بسته شد");
+  };
 
-const updateProductInfos = (event) => {
-  event.preventDefault();
-  console.log("محصول ویرایش شد");
-};
+  const updateProductInfos = (event) => {
+    event.preventDefault();
+    console.log("محصول ویرایش شد");
+  };
 
-return (
-  <>
-    {/* {allProducts.length ? (
+  return (
+    <>
+      {allProducts.length ? (
         <table className="products-table">
           <thead>
             <tr className="products-table-heading-tr">
@@ -92,7 +102,10 @@ return (
                   </button>
                   <button
                     className="products-table-btn"
-                    onClick={() => setIsShowDeleteModal(true)}
+                    onClick={() => {
+                      setIsShowDeleteModal(true);
+                      setProductID(product.id);
+                    }}
                   >
                     حذف
                   </button>
@@ -109,110 +122,62 @@ return (
         </table>
       ) : (
         <ErrorBox msg="هیچ محصولی یافت نشد" />
-      )} */}
-    {/* ./././././././././././../././././././././././../././././././././././../././././././././././../././././././././././../././././././././././. */}
-    <table className="products-table">
-      <thead>
-        <tr className="products-table-heading-tr">
-          <th>عکس</th>
-          <th>اسم</th>
-          <th>قیمت</th>
-          <th>موجودی</th>
-        </tr>
-      </thead>
+      )}
 
-      <tbody>
-        <tr className="products-table-tr">
-          <td>
-            <img
-              src="/img/oil.jpeg"
-              alt="oil image"
-              className="products-table-img"
+      {isShowDeleteModal && (
+        <DeleteModal
+          submitAction={deleteModalSubmitAction}
+          cancelAction={deleteModalCancelAction}
+        />
+      )}
+      {isShowDetailsModal && <DetailsModal onHide={closeDetailsmodal} />}
+      {isShowEditModal && (
+        <EditModal
+          onClose={() => setIsShowEditModal(false)}
+          onSubmit={updateProductInfos}
+        >
+          <div className="edit-proructs-form-group">
+            <span>
+              <AiOutlineDollarCircle />
+            </span>
+            <input
+              type="text"
+              placeholder="عنوان جدید را وارد کنید"
+              className="edit-product-input"
             />
-          </td>
-          <td>روغن سرخ کردنی</td>
-          <td>92000 تومان</td>
-          <td>82</td>
-          <td>
-            <button
-              className="products-table-btn"
-              onClick={() => setIsShowDetailsModal(true)}
-            >
-              جزییات
-            </button>
-            <button
-              className="products-table-btn"
-              onClick={
-                () => setIsShowDeleteModal(true)
-                // setProductID(product.id)
-              }
-            >
-              حذف
-            </button>
-            <button
-              className="products-table-btn"
-              onClick={() => setIsShowEditModal(true)}
-            >
-              ویرایش
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    {/* ./././././././././././../././././././././././../././././././././././../././././././././././../././././././././././../././././././././././. */}
-    {isShowDeleteModal && (
-      <DeleteModal
-        submitAction={deleteModalSubmitAction}
-        cancelAction={deleteModalCancelAction}
-      />
-    )}
-    {isShowDetailsModal && <DetailsModal onHide={closeDetailsmodal} />}
-    {isShowEditModal && (
-      <EditModal
-        onClose={() => setIsShowEditModal(false)}
-        onSubmit={updateProductInfos}
-      >
-        <div className="edit-proructs-form-group">
-          <span>
-            <AiOutlineDollarCircle />
-          </span>
-          <input
-            type="text"
-            placeholder="عنوان جدید را وارد کنید"
-            className="edit-product-input"
-          />
-        </div>
-        <div className="edit-proructs-form-group">
-          <span>
-            <AiOutlineDollarCircle />
-          </span>
-          <input
-            type="text"
-            placeholder="عنوان جدید را وارد کنید"
-            className="edit-product-input"
-          />
-        </div>
-        <div className="edit-proructs-form-group">
-          <span>
-            <AiOutlineDollarCircle />
-          </span>
-          <input
-            type="text"
-            placeholder="عنوان جدید را وارد کنید"
-            className="edit-product-input"
-          />
-        </div>
-        <div className="edit-proructs-form-group">
-          <span>
-            <AiOutlineDollarCircle />
-          </span>
-          <input
-            type="text"
-            placeholder="عنوان جدید را وارد کنید"
-            className="edit-product-input"
-          />
-        </div>
-      </EditModal>
-    )}
-  </>
-);
+          </div>
+          <div className="edit-proructs-form-group">
+            <span>
+              <AiOutlineDollarCircle />
+            </span>
+            <input
+              type="text"
+              placeholder="عنوان جدید را وارد کنید"
+              className="edit-product-input"
+            />
+          </div>
+          <div className="edit-proructs-form-group">
+            <span>
+              <AiOutlineDollarCircle />
+            </span>
+            <input
+              type="text"
+              placeholder="عنوان جدید را وارد کنید"
+              className="edit-product-input"
+            />
+          </div>
+          <div className="edit-proructs-form-group">
+            <span>
+              <AiOutlineDollarCircle />
+            </span>
+            <input
+              type="text"
+              placeholder="عنوان جدید را وارد کنید"
+              className="edit-product-input"
+            />
+          </div>
+        </EditModal>
+      )}
+    </>
+  );
+}
