@@ -13,15 +13,34 @@
 //     </>
 //   );
 // }
-import React from "react";
+import React, { useEffect, useState } from "react";
 import AddNewProduct from "../AddNewProduct/AddNewProduct";
 import ProductsTable from "../ProductsTable/ProductsTable";
 
 export default function Products() {
+  const [allProducts, setAllProducts] = useState([]);
+
+  useEffect(() => {
+    getAllProducts();
+  }, []);
+
+  const getAllProducts = () => {
+    fetch("https://dummyjson.com/products")
+      .then((res) => res.json())
+      .then((products) => {
+        if (Array.isArray(products.products)) {
+          setAllProducts(products.products);
+        }
+      });
+  };
+
   return (
     <>
-      <AddNewProduct />
-      <ProductsTable />
+      <AddNewProduct getAllProducts={getAllProducts} />
+      <ProductsTable
+        allProducts={allProducts}
+        getAllProducts={getAllProducts}
+      />
     </>
   );
 }

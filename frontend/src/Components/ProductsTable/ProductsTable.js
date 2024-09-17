@@ -7,11 +7,11 @@ import { AiOutlineDollarCircle } from "react-icons/ai";
 import ErrorBox from "../Errorbox/Errorbox";
 import Products from "../Products/Products";
 
-export default function ProductsTable() {
+export default function ProductsTable({ getAllProducts, allProducts }) {
   const [isShowDeleteModal, setIsShowDeleteModal] = useState(false);
   const [isShowDetailsModal, setIsShowDetailsModal] = useState(false);
   const [isShowEditModal, setIsShowEditModal] = useState(false);
-  const [allProducts, setAllProducts] = useState([]);
+
   const [productID, setProductID] = useState(null);
   const [isLoading, setIsLoading] = useState(false); // State برای مدیریت لودینگ
   const [mainProductInfos, setMainProductInfos] = useState({});
@@ -27,20 +27,6 @@ export default function ProductsTable() {
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat("fa-IR").format(price); // 'fa-IR' برای فرمت فارسی با جداکننده سه‌تایی
-  };
-
-  useEffect(() => {
-    getAllProducts();
-  }, []);
-
-  const getAllProducts = () => {
-    fetch("https://dummyjson.com/products")
-      .then((res) => res.json())
-      .then((products) => {
-        if (Array.isArray(products.products)) {
-          setAllProducts(products.products);
-        }
-      });
   };
 
   const deleteModalCancelAction = () => {
