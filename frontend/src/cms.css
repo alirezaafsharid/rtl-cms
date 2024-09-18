@@ -48,3 +48,11 @@
   padding: 8px 15px;
   border-radius: 10px;
 }
+.cms-title {
+  font-size: 1.4rem;
+  background-color: #201c81;
+  color: var(--white);
+  text-align: center;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
