@@ -1,17 +1,37 @@
 import React, { useEffect, useState } from "react";
 import ErrorBox from "../Errorbox/Errorbox";
 import DetailsModal from "../DetailsModal/DetailsModal";
+import DeleteModal from "../DeleteModal/DeleteModal";
 
 import "./Comments.css";
 
 export default function Comments() {
   const [allComments, setAllComments] = useState([]);
   const [isShowDetailsModal, setIsShowDetailsModal] = useState(false);
+  const [isShowDeleteModal, setIsShowDeleteModal] = useState(false);
+  const [commentsID, setCommentsID] = useState(null);
+
   const [mainCommentBody, setMainCommentBody] = useState("");
 
   const closeDetailsModal = () => setIsShowDetailsModal(false);
+  const closeDeleteModal = () => setIsShowDeleteModal(false);
+  const deleteComment = () => {
+    fetch(`https://dummyjson.com/comments/${commentsID}`, {
+      method: "DELETE",
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        setIsShowDeleteModal(false);
+        // حذف کامنت از لیست  ***************************************************************
+        setAllComments((prevComments) =>
+          prevComments.filter((comment) => comment.id !== commentsID)
+        );
+        getAllComments();
+      });
+    console.log("کامنت با موفقیت ریمو شد");
+  };
 
-  useEffect(() => {
+  function getAllComments() {
     // fetch("https://dummyjson.com/comments")
     //   .then((res) => res.json())
     //   .then((comments) => setAllComments(comments));
@@ -34,6 +54,10 @@ export default function Comments() {
         setAllComments(data.comments);
       });
     console.log("کامنت ها دریافت شد");
+  }
+
+  useEffect(() => {
+    getAllComments();
   }, []);
 
   return (
@@ -68,7 +92,14 @@ export default function Comments() {
                 <td>{comments.id}</td>
                 <td>{comments.likes}</td>
                 <td>
-                  <button>حذف</button>
+                  <button
+                    onClick={() => {
+                      setIsShowDeleteModal(true);
+                      setCommentsID(comments.id);
+                    }}
+                  >
+                    حذف
+                  </button>
                   <button>ویرایش</button>
                   <button>پاسخ</button>
                   <button>تایید</button>
@@ -87,6 +118,13 @@ export default function Comments() {
             بستن
           </button>
         </DetailsModal>
+      )}
+      {isShowDeleteModal && (
+        <DeleteModal
+          cancelAction={closeDeleteModal}
+          onHide={closeDeleteModal}
+          submitAction={deleteComment}
+        />
       )}
     </div>
   );
