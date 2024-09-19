@@ -115,7 +115,7 @@ export default function Users() {
                     >
                       حذف
                     </button>
-                    <button>جزییات</button>
+                    {/* <button>جزییات</button> */}
                     <button
                       onClick={() => {
                         setIsShowEditModal(true);
