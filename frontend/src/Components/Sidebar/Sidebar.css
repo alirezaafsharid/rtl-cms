@@ -17,28 +17,37 @@
   margin-top: 20px;
 }
 
-.sidebar-links li {
+.sidebar-links a {
   position: relative;
   padding: 15px;
+  width: 100%;
 }
 
-.sidebar-links li a {
-  width: 100%;
+.sidebar-links a {
+  width: 80%;
   color: var(--white);
   text-decoration: none;
   display: flex;
   justify-content: right;
   align-items: center;
   font-size: 1.3rem;
+  transition: all 0.2s linear;
 }
 
-.sidebar-links li.active {
-  background-color: --white-50 #f0f0f0;
+.sidebar-links a:hover {
+  background-color: var(--white);
+  color: #391588;
 }
 
-.sidebar-links li:first-child {
-  margin-bottom: 20px;
-}
 .icon {
   margin-left: 8px;
+}
+
+.sidebar-links a.active {
+  background-color: var(--white);
+  color: #391588;
+}
+
+.sidebar-links a:first-child {
+  margin-bottom: 20px;
 }
